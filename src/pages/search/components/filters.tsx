@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Children } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Tabs, Select, Form } from 'antd';
 
@@ -15,15 +15,12 @@ function Filters() {
 
   useEffect(() => {
     login().then(res => {
-      setData(res.data)
-      let xx = {}
+      setData(res.data);
+      let a = {};
       res.data.forEach(item => {
-        
-        xx[item.typeId] = ''
-      })
-      setForm(xx)
-      // console.log(111, xx);
-      
+        a[item.typeId] = '';
+      });
+      setForm(a);
     });
   }, []);
 
@@ -38,27 +35,31 @@ function Filters() {
   return (
     <Tabs defaultActiveKey="1" onChange={callback}>
       <TabPane tab="受试者" key="1">
-        <Form
-          name="basic"
-          initialValues={foxrm}
-          layout="vertical"
-          onValuesChange={onFinish}
-          form={form}
-        >
-          {data.map((item, index) => {
-            return (
-              <Item label={item.typeName} name={item.typeId} key={index}>
-                <Select placeholder="请选择">
-                  {
-                    item.children.map((child,index) => {
-                    return <Option value={child.name} key={index}>{child.name}</Option>
-                    })
-                  }
-                </Select>
-              </Item>
-            );
-          })}
-        </Form>
+        {Object.keys(foxrm).length && (
+          <Form
+            name="basic"
+            layout="vertical"
+            onValuesChange={onFinish}
+            form={form}
+            initialValues={foxrm}
+          >
+            {data.map((item, index) => {
+              return (
+                <Item label={item.typeName} name={item.typeId} key={index}>
+                  <Select placeholder="请选择">
+                    {item.children.map((child, index) => {
+                      return (
+                        <Option value={child.name} key={index}>
+                          {child.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Item>
+              );
+            })}
+          </Form>
+        )}
       </TabPane>
       <TabPane tab="基因" key="2">
         Content of Tab Pane 2
