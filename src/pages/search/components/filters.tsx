@@ -8,6 +8,11 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 const { Item } = Form;
 
+interface OptionProps {
+  name: string;
+  count?: number;
+}
+
 function Filters() {
   const [data, setData] = useState<any[]>([]);
   const [foxrm, setForm] = useState({});
@@ -17,7 +22,7 @@ function Filters() {
     login().then(res => {
       setData(res.data);
       let a = {};
-      res.data.forEach(item => {
+      res.data.forEach((item: any) => {
         a[item.typeId] = '';
       });
       setForm(a);
@@ -47,7 +52,7 @@ function Filters() {
               return (
                 <Item label={item.typeName} name={item.typeId} key={index}>
                   <Select placeholder="请选择">
-                    {item.children.map((child, index) => {
+                    {item.children.map((child: OptionProps, index: number) => {
                       return (
                         <Option value={child.name} key={index}>
                           {child.name}
